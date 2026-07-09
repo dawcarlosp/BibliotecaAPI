@@ -39,14 +39,14 @@ jobs:
       - name: Ejecutar Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
-      # Instalación limpia de Swaks
+      # Instalación de Swaks
       - name: Instalar Swaks
         if: always()
         run: |
           sudo apt-get update
           sudo apt-get install -y swaks
 
-      # Envío del correo en una sola línea para evitar fallos de lectura de argumentos
+      # Envío del correo inyectando los secretos de forma directa y limpia
       - name: Enviar correo de notificación
         if: always()
         env:
@@ -62,5 +62,5 @@ jobs:
             MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
           fi
 
-          # Comando unificado en una sola línea para garantizar estabilidad
-          echo "$SMTP_PASS" | swaks --server smtp.gmail.com --port 587 --tls --auth LOGIN --auth-user "$SMTP_USER" --auth-password=- --to "destinatario@correo.com" --from "$SMTP_USER" --header "Subject: $ASUNTO" --body "$MENSAJE"
+          # Pasamos la variable $SMTP_PASS directamente al parámetro sin usar echo ni tuberías
+          swaks --server smtp.gmail.com --port 587 --tls --auth LOGIN --auth-user "$SMTP_USER" --auth-password "$SMTP_PASS" --to "dawcarlospereira@gmail.com" --from "$SMTP_USER" --header "Subject: $ASUNTO" --body "$MENSAJE"
