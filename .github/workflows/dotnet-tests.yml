@@ -62,5 +62,5 @@ jobs:
             MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
           fi
 
-          # Pasamos la variable $SMTP_PASS directamente al parámetro sin usar echo ni tuberías
+          # Pasamos la variable $SMTP_PASS directamente al parámetro sin usar echo ni tuberías 
           swaks --server smtp.gmail.com --port 587 --tls --auth LOGIN --auth-user "$SMTP_USER" --auth-password "$SMTP_PASS" --to "dawcarlospereira@gmail.com" --from "$SMTP_USER" --header "Subject: $ASUNTO" --body "$MENSAJE"
