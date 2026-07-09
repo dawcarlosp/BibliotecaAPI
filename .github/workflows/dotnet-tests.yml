@@ -18,8 +18,10 @@ jobs:
 
       - name: Soy otro paso innecesario
         run: whoami
+
       - name: Otro más, por si dos no fueran necesario
         run: pwd
+
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
@@ -36,3 +38,36 @@ jobs:
 
       - name: Ejecutar Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # Este paso se ejecuta SIEMPRE para asegurar que swaks esté disponible
+      - name: Instalar Swaks
+        if: always()
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swaks
+
+      # Este paso evalúa el estado del pipeline para enviar un mensaje personalizado
+      - name: Enviar correo de notificación
+        if: always()
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: |
+          # Detectamos si el pipeline fue exitoso o falló para cambiar el asunto y el mensaje
+          if [ "${{ job.status }}" = "success" ]; then
+            ASUNTO="✅ Pipeline Exitoso: ASP.NET Tests"
+            MENSAJE="El pipeline se ha ejecutado correctamente. Todos los tests de la solución .NET han pasado con éxito."
+          else
+            ASUNTO="❌ Pipeline Fallido: ASP.NET Tests"
+            MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
+          fi
+
+          # Envío seguro a través de swaks
+          echo "$SMTP_PASS" | swaks --server ://gmail.com --port 587 --tls \
+            --auth LOGIN \
+            --auth-user "$SMTP_USER" \
+            --auth-password=- \
+            --to "dawcarlospereira@correo.com" \
+            --from "$SMTP_USER" \
+            --header "Subject: $ASUNTO" \
+            --body "$MENSAJE"
