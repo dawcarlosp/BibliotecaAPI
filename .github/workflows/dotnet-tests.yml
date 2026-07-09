@@ -46,7 +46,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y swaks
 
-      # Envío del correo en una sola línea para evitar fallos de lectura de argumentos
+      # Envío del correo en una sola línea para evitar fallos de lectura de argumentos 
       - name: Enviar correo de notificación
         if: always()
         env:
