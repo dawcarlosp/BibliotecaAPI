@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj": {}
+    "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj": {
+    "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj",
         "projectName": "BibliotecaAPI.Tests",
-        "projectPath": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj",
-        "packagesPath": "C:\\Users\\Profesor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI.Tests\\obj\\",
+        "projectPath": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI.Tests\\BibliotecaAPI.Tests.csproj",
+        "packagesPath": "C:\\Users\\Alumno3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Profesor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Alumno3\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -34,8 +34,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\BibliotecaAPI.csproj": {
-                "projectPath": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\BibliotecaAPI.csproj"
+              "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\BibliotecaAPI.csproj": {
+                "projectPath": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\BibliotecaAPI.csproj"
               }
             }
           }
@@ -380,20 +380,20 @@
         }
       }
     },
-    "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\BibliotecaAPI.csproj": {
+    "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\BibliotecaAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\BibliotecaAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\BibliotecaAPI.csproj",
         "projectName": "BibliotecaAPI",
-        "projectPath": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\BibliotecaAPI.csproj",
-        "packagesPath": "C:\\Users\\Profesor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Profesor\\Desktop\\tests\\tests\\BibliotecaAPI\\obj\\",
+        "projectPath": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\BibliotecaAPI.csproj",
+        "packagesPath": "C:\\Users\\Alumno3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alumno3\\Desktop\\BibliotecaAPI\\BibliotecaAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Profesor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Alumno3\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
