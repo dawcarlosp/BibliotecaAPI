@@ -39,12 +39,14 @@ jobs:
       - name: Ejecutar Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
+      # Instalación limpia de Swaks
       - name: Instalar Swaks
         if: always()
         run: |
           sudo apt-get update
           sudo apt-get install -y swaks
 
+      # Envío del correo en una sola línea para evitar fallos de lectura de argumentos
       - name: Enviar correo de notificación
         if: always()
         env:
@@ -52,7 +54,6 @@ jobs:
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           JOB_STATUS: ${{ job.status }}
         run: |
-          # Definimos las variables de texto según el estado del job
           if [ "$JOB_STATUS" = "success" ]; then
             ASUNTO="✅ Pipeline Exitoso: ASP.NET Tests"
             MENSAJE="El pipeline se ha ejecutado correctamente. Todos los tests de la solución .NET han pasado con éxito."
@@ -61,12 +62,5 @@ jobs:
             MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
           fi
 
-          # Ejecución de swaks con el servidor SMTP explícito sin caracteres extraños
-          echo "$SMTP_PASS" | swaks --server ://gmail.com --port 587 --tls \
-            --auth LOGIN \
-            --auth-user "$SMTP_USER" \
-            --auth-password=- \
-            --to "dawcarlospereira@correo.com" \
-            --from "$SMTP_USER" \
-            --header "Subject: $ASUNTO" \
-            --body "$MENSAJE"
+          # Comando unificado en una sola línea para garantizar estabilidad
+          echo "$SMTP_PASS" | swaks --server smtp.gmail.com --port 587 --tls --auth LOGIN --auth-user "$SMTP_USER" --auth-password=- --to "destinatario@correo.com" --from "$SMTP_USER" --header "Subject: $ASUNTO" --body "$MENSAJE"
