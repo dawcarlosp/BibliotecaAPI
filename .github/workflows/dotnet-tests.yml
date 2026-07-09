@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Soy un paso que no hace nada
         run: echo "¡Hola bueys!"
+
+      - name: Soy otro paso innecesario
+        run: whoami
+      - name: Otro más, por si dos no fueran necesario
+        run: pwd
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
