@@ -13,6 +13,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Soy un paso que no hace nada
+        run: echo "¡Hola bueys!"
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
