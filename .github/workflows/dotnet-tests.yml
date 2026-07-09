@@ -39,22 +39,21 @@ jobs:
       - name: Ejecutar Tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
-      # Este paso se ejecuta SIEMPRE para asegurar que swaks esté disponible
       - name: Instalar Swaks
         if: always()
         run: |
           sudo apt-get update
           sudo apt-get install -y swaks
 
-      # Este paso evalúa el estado del pipeline para enviar un mensaje personalizado
       - name: Enviar correo de notificación
         if: always()
         env:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          JOB_STATUS: ${{ job.status }}
         run: |
-          # Detectamos si el pipeline fue exitoso o falló para cambiar el asunto y el mensaje
-          if [ "${{ job.status }}" = "success" ]; then
+          # Definimos las variables de texto según el estado del job
+          if [ "$JOB_STATUS" = "success" ]; then
             ASUNTO="✅ Pipeline Exitoso: ASP.NET Tests"
             MENSAJE="El pipeline se ha ejecutado correctamente. Todos los tests de la solución .NET han pasado con éxito."
           else
@@ -62,7 +61,7 @@ jobs:
             MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
           fi
 
-          # Envío seguro a través de swaks
+          # Ejecución de swaks con el servidor SMTP explícito sin caracteres extraños
           echo "$SMTP_PASS" | swaks --server ://gmail.com --port 587 --tls \
             --auth LOGIN \
             --auth-user "$SMTP_USER" \
