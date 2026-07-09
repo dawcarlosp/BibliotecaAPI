@@ -1,11 +1,9 @@
-#test
 name: ASP.NET Tests
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -38,30 +36,52 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Ejecutar Tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: |
+          dotnet test --configuration Release --no-build --verbosity normal > test_output.log 2>&1
 
-      # Instalación de Swaks
       - name: Instalar Swaks
         if: always()
         run: |
           sudo apt-get update
           sudo apt-get install -y swaks
 
-      # Envío del correo inyectando los secretos de forma directa y limpia
       - name: Enviar correo de notificación
         if: always()
         env:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           JOB_STATUS: ${{ job.status }}
         run: |
           if [ "$JOB_STATUS" = "success" ]; then
             ASUNTO="✅ Pipeline Exitoso: ASP.NET Tests"
-            MENSAJE="El pipeline se ha ejecutado correctamente. Todos los tests de la solución .NET han pasado con éxito."
+            MENSAJE_ORIGINAL="El pipeline se ha ejecutado correctamente. Todos los tests de la solución .NET han pasado con éxito."
           else
             ASUNTO="❌ Pipeline Fallido: ASP.NET Tests"
-            MENSAJE="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
+            MENSAJE_ORIGINAL="Alerta: El pipeline ha fallado durante la ejecución. Por favor, revisa los logs de GitHub Actions para identificar el error."
           fi
 
-          # Pasamos la variable $SMTP_PASS directamente al parámetro sin usar echo ni tuberías
+          LOG_TEXT=""
+          if [ -f test_output.log ]; then
+            LOG_TEXT=$(tail -n 40 test_output.log)
+          fi
+
+          IA_RESUMEN=$(jq -n \
+            --arg status "$JOB_STATUS" \
+            --arg log "$LOG_TEXT" \
+            '{
+              model: "deepseek/deepseek-v4-flash:free",
+              messages: [
+                {role: "system", content: "Eres un ingeniero DevOps experto. Analiza el fragmento de log adjunto y haz un resumen técnico súper breve, claro y en español de lo que ocurrió (si falló, di qué test o línea falló y la solución rápida). Sé muy directo."},
+                {role: "user", content: ("Estado: " + $status + ". Log:\n" + $log)}
+              ]
+            }' | curl -s https://openrouter.ai/api/v1/chat/completions \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+              -d @- | jq -r '.choices[0].message.content // "No se pudo generar el resumen de IA."' 2>/dev/null || echo "No se pudo generar el resumen de IA.")
+
+          MENSAJE="$MENSAJE_ORIGINAL
+          --- RESUMEN INTELIGENTE (DeepSeek V4 Flash) ---
+          $IA_RESUMEN"
+
           swaks --server smtp.gmail.com --port 587 --tls --auth LOGIN --auth-user "$SMTP_USER" --auth-password "$SMTP_PASS" --to "dawcarlospereira@gmail.com" --from "$SMTP_USER" --header "Subject: $ASUNTO" --body "$MENSAJE"
